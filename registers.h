@@ -7,8 +7,6 @@
  * Reset and Clock Control. This peripheral is used to turn on the other peripherals
  */
 
- //248
-
 typedef struct
 {
   volatile uint32_t CR;
@@ -32,13 +30,6 @@ typedef struct
 
 #define RCC ((RCC_TypeDef *)0x40023800)
 
-//Enable GPIO B-register clock
-#define RCC_AHB1ENR_GPIOBEN (0x000002)
-
-//Enable ADC 1 and 2
-#define RCC_APB2ENR_ADC1 (0x000080) //8th bit of register
-#define RCC_APB2ENR_ADC2 (0x000100) //9th bit of register
-
 /*
  * GPIOB. This peripheral controls port B of the GPIOs
  */
@@ -58,9 +49,6 @@ typedef struct
 
 //Page 65 datasheet
 #define GPIOB ((GPIO_TypeDef *)0x40020400)
-
-//Address of MODE register 0
-#define GPIOB_MODER0 (0x000001)
 
 //Analog to Digital converter pheripheral
 
@@ -85,17 +73,6 @@ typedef struct
 } ADC_TypeDef;
 
 #define ADC ((ADC_TypeDef *)0x40012000)
-
-//ADC_CR2_ADON used for turning on ADC clock
-#define ADC_CR2_ADON (0x00000001)
-
-//adc prescale bits
-//pclk2/4
-#define ADC_CCR_ADCPRE (0x010000)
-
-//adc resolution bits
-//set to 12-bit
-#define ADC_CR1_RES (0x1000000)
 
 
 #endif //REGISTERS_H

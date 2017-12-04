@@ -1,24 +1,45 @@
 #include "adc.h"
 #include "registers.h"
 
-ADC::ADC()
+Adc::Adc()
 {
-  //TODO:
-  //Enable analog mode, set GPIOB_MODER0 to 11
-  GPIOB_MODER0 |= 3;
-  //conenct PBO to adc register (ADC12_IN8)
 
-  //Enable port b clock
-  RCC-> AHB1ENR |= RCC_AHB1ENR_GPIOBEN;
+	//TODO:
+	//Enable analog mode, set GPIOB_MODER of PB0
+	GPIOB->MODER |= (0b11 << 0);
 
-  //Set ADC clocks
-  RCC-> APB2ENR |= RCC_APB2ENR_ADC1;
-  RCC-> APB2ENR |= RCC_APB2ENR_ADC2;
+	//Enable port b clock GPIOBEN
+	RCC->AHB1ENR |= (1 << 1);
 
-  //set ADC speed (prescale and sample time)
-  ADC_CCR |= (1 << 16);  //set measurement mode
+	//Set ADC1 and ADC2 clocks
+	RCC->APB2ENR |= (1 << 8);
+	RCC->APB2ENR |= (1 << 9);
+	
+	//Set ADC resolution RES to 12bit
+	ADC->ADC_CR1 |= (0b00 << 24);
 
-RCC -> ADC_CR1 |= (0<<24);
+	//Set ADC speed (prescaler) ADCPRE to PCLK2 / 4
+	ADC->ADC_CCR |= (0b01 << 16);
+	
+	//Set sampling time of channel8 (SMP8) to 112 cycles
+	ADC->ADC_SMPR2 |= (0b101 << 24);
+	
+	//Select channel8 for the 1st conversion (SQ1)
+	// By default one conversion per group
+	ADC->ADC_SQR2 |= (8 << 0);
+	
+	//Turn ADC on (ADON)
+	ADC->ADC_CR2 |= (1 << 0);
+
+	//Connect PBO to adc register (ADC12_IN8)
 }
-  //make function to turn on ADC (set ADON in register ADC_CR2)
-  //and to turn off
+/*TODO:
+start conversion with SWSTART in ADC_CR2
+
+get values in ADC_DR:
+– The EOC (end of conversion) flag is set (clear it afterwards?)
+– An interrupt is generated if the EOCIE bit is set
+
+think about single or continuous conversion mode
+turn off / power down ADC with ADON to 0
+  */

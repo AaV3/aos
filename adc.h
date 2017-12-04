@@ -3,15 +3,12 @@
 #ifndef ADC_H
 #define ADC_H
 
-class ADC
+class Adc
 {
 public:
 
-ADC();
-
-Enable_ADC();
-
-Disable_ADC();
+	Adc();
+private:
 
 };
 
