@@ -18,7 +18,7 @@ SUBDIRS := $(KPATH)
 ##
 SRC :=                                  \
 main.cpp								\
-adc.cpp
+adc.cpp									
 
 PROGRAM_CMDLINE :=						\
 make && qstlink2 -cwV main.bin 
