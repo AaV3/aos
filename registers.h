@@ -7,7 +7,7 @@
  * Reset and Clock Control. This peripheral is used to turn on the other peripherals
  */
 
-typedef struct
+/*typedef struct
 {
   volatile uint32_t CR;
   volatile uint32_t PLLCFGR;
@@ -30,9 +30,8 @@ typedef struct
 
 #define RCC ((RCC_TypeDef *)0x40023800)
 
-/*
- * GPIOB. This peripheral controls port B of the GPIOs
- */
+
+// GPIOB. This peripheral controls port B of the GPIOs
 
 typedef struct
 {
@@ -49,7 +48,7 @@ typedef struct
 
 //Page 65 datasheet
 #define GPIOB ((GPIO_TypeDef *)0x40020400)
-
+*/
 //Analog to Digital converter pheripheral
 
 typedef struct
