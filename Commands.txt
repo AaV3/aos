@@ -1,0 +1,13 @@
+miosix is in /home/chris/AOS
+compile and flash it with the help of makefile modification:
+make program
+
+to read printf:
+with miosix:
+black GND, yellow PB10, orange PB11
+without miosix:
+black GND, red VDD, yellow PA2, orange PA3
+sudo screen /dev/ttyUSB0 19200
+
+Register file:
+cd /home/chris/MEGA/Dokumente/Embedded_Systems/AOS/Project/aos/miosix/arch/common/CMSIS/Device/ST/STM32F4xx/Include

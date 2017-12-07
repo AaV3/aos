@@ -1,0 +1,4 @@
+FSM (also for Docu)
+Game logic
+Filter?
+Calibrate because of different ambient conditions?
