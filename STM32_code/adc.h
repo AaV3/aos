@@ -1,5 +1,4 @@
 //#include "registers.h"
-#include <miosix.h>
 
 #ifndef ADC_H
 #define ADC_H
