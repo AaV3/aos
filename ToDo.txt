@@ -1,5 +1,9 @@
+
+restart after one match
+anti cheat
+LED bug fix
+short break after allFour and oneAfterOther
+remove delay after player2 button press and led start
 c or c++ design
-Button interrupt deactivate
-Game logic
-Filter?
 Calibrate because of different ambient conditions?
+adjust comments and add new 

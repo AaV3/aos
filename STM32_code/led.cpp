@@ -5,6 +5,7 @@
 using namespace miosix;
 
 LedMode currentMode;
+bool ledsOn;
 
 void initLedTimer(){
 	initLed();
@@ -40,12 +41,17 @@ void enableTimerInterrupt() {
 	//Enable update interrupt for the timer
 	TIM3->DIER = TIM_DIER_UIE;
 	// Set priority for the interrupt
-	NVIC_SetPriority(TIM3_IRQn, 1);
+	NVIC_SetPriority(TIM3_IRQn, 15);
 	// Enable interrupt for timer 2
 	NVIC_EnableIRQ(TIM3_IRQn);
 }
 
 void startLedTimer(LedMode mode, uint16_t intervalInMs){
+	ledsOn = false;
+	greenLed::low();
+	blueLed::low();
+	redLed::low();
+	orangeLed::low();
 	currentMode = mode;
 	// presc = Systick*desiredIntervall/ARR/4
 	uint16_t prescaler = 168000*intervalInMs/10000/4;
@@ -60,30 +66,28 @@ void stopLedTimer(){
 
 //Function for toggling the LED, called by interrupt
 void toggleAllLed() {
-	static bool led_on = false;
-	if (led_on) {
+	if (ledsOn) {
 		greenLed::low();
 		blueLed::low();
 		redLed::low();
 		orangeLed::low();
-		led_on = false;
+		ledsOn = false;
 	} else {
 		greenLed::high();
 		blueLed::high();
 		redLed::high();
 		orangeLed::high();
-		led_on = true;
+		ledsOn = true;
 	}
 }
 
 void toggleOneAfterOther(){
-	static bool led_on = false;
-	if (led_on) {
+	if (ledsOn) {
 		greenLed::low();
 		blueLed::low();
 		redLed::low();
 		orangeLed::low();
-		led_on = false;
+		ledsOn = false;
 	} else {
 		static int count = 1;
 		switch(count){ // no "break" here
@@ -91,37 +95,37 @@ void toggleOneAfterOther(){
 			case 2: blueLed::high();
 			case 1: redLed::high();
 		}
-		++count;
-		led_on = true;
+		ledsOn = true;
+		count = (count == 3) ? count = 1 : ++count;
 	}
 }
 
 void toggleLast(){
-	static bool led_on = true;
-	if (led_on) {
-		greenLed::low();
-		blueLed::low();
-		redLed::low();
-		orangeLed::low();
-		led_on = false;
-	} else {
+	// inversed on purpose
+	if (ledsOn) {
 		greenLed::high();
 		blueLed::high();
 		redLed::high();
 		orangeLed::high();
+		ledsOn = false;
 		stopLedTimer();
+	} else {
+		greenLed::low();
+		blueLed::low();
+		redLed::low();
+		orangeLed::low();
+		ledsOn = true;
 	}
 }
 
 // Handler for Timer2 overflow interrupt
 void TIM3_IRQHandler(){
-	//printf("in interrupt\r\n");
 	if(TIM3->SR & TIM_SR_UIF) {
 		//Reset the update interrupt flag bit
 		TIM3->SR ^= TIM_SR_UIF;
 		if(currentMode == allFour) toggleAllLed();
 		else if(currentMode == firstThree) toggleOneAfterOther();
-		else toggleLast();
+		else if(currentMode == fourth) toggleLast();
 	}
 }
 

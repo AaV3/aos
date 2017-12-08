@@ -55,7 +55,6 @@ void Adc::enableWatchdogAndWait(){
 	ADC1->CR1 |= ADC_CR1_AWDEN + ADC_CR1_AWDSGL;
 	//Check if watchdog activates
 	while((ADC1->SR & ADC_SR_AWD) == 0);
-	printf("Covered!\r\n");
 	// Shut down ADC
 	ADC1->CR2 &= ~ADC_CR2_ADON;
 }
