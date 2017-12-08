@@ -46,16 +46,16 @@ uint16_t Adc::convert(){
 	return (uint16_t) ADC1->DR & ADC_DR_DATA;
 }
 
-void Adc::enableWatchdogAndCheck(){
+void Adc::enableWatchdogAndWait(){
 	//Set watchdog channel select bits AWDCH to 8
 	ADC1->CR1 |= (8 << 0);
 	//Set lower treshold
-	ADC1->LTR = 400;
+	ADC1->LTR = 500;
 	//Enable watchdog
 	ADC1->CR1 |= ADC_CR1_AWDEN + ADC_CR1_AWDSGL;
 	//Check if watchdog activates
 	while((ADC1->SR & ADC_SR_AWD) == 0);
-	printf("Alarm!\r\n");
+	printf("Covered!\r\n");
 	// Shut down ADC
 	ADC1->CR2 &= ~ADC_CR2_ADON;
 }

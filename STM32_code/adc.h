@@ -8,7 +8,7 @@ class Adc
 public:
 	Adc();
 	uint16_t convert();
-	void enableWatchdogAndCheck();
+	void enableWatchdogAndWait();
 private:
 
 };

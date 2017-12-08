@@ -11,17 +11,13 @@ typedef Gpio<GPIOD_BASE,13> orangeLed;
 typedef Gpio<GPIOD_BASE,14> redLed;
 typedef Gpio<GPIOD_BASE,15> blueLed;
 
-enum LedMode { allFour, start };
+enum LedMode { allFour, firstThree, fourth };
 
-class Led
-{	
-	public:
-		Led();
-		void initLed();
-		void initTimer();
-		void enableTimerInterrupt();
-		void startLedTimer(LedMode, uint16_t intervalInMs);
-		void stopLedTimer();
-};
+void initLedTimer();
+void initLed();
+void initTimer();
+void enableTimerInterrupt();
+void startLedTimer(LedMode, uint16_t intervalInMs);
+void stopLedTimer();
 
 #endif //LED_H

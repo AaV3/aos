@@ -1,4 +1,5 @@
-FSM (also for Docu)
+c or c++ design
+Button interrupt deactivate
 Game logic
 Filter?
 Calibrate because of different ambient conditions?

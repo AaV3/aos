@@ -19,7 +19,8 @@ SUBDIRS := $(KPATH)
 SRC :=                                  \
 main.cpp								\
 adc.cpp									\
-led.cpp
+led.cpp									\
+button.cpp								
 
 PROGRAM_CMDLINE :=						\
 make && qstlink2 -cwV main.bin 
