@@ -5,13 +5,14 @@
 using namespace miosix;
 
 LedMode currentMode;
-bool ledsOn;
+bool ledsOn, skipFirstInterrupt;
 
 void initLedTimer(){
 	initLed();
 	initTimer();
 	enableTimerInterrupt();
 }
+
 
 // Function for configuring the GPIO
 void initLed() {
@@ -53,6 +54,7 @@ void startLedTimer(LedMode mode, uint16_t intervalInMs){
 	redLed::low();
 	orangeLed::low();
 	currentMode = mode;
+	skipFirstInterrupt = false;
 	// presc = Systick*desiredIntervall/ARR/4
 	uint16_t prescaler = 168000*intervalInMs/10000/4;
 	TIM3->PSC = prescaler;
@@ -101,6 +103,10 @@ void toggleOneAfterOther(){
 }
 
 void toggleLast(){
+	if(!skipFirstInterrupt){
+		skipFirstInterrupt = true;
+		return;
+	}
 	// inversed on purpose
 	if (ledsOn) {
 		greenLed::high();
@@ -108,7 +114,7 @@ void toggleLast(){
 		redLed::high();
 		orangeLed::high();
 		ledsOn = false;
-		stopLedTimer();
+		//stopLedTimer();
 	} else {
 		greenLed::low();
 		blueLed::low();

@@ -8,7 +8,7 @@
 using namespace miosix;
 
 
-#define MAX_PLAYERS	2
+#define MAX_PLAYERS	1
 Adc adc;
 Timer tim;
 int playerNr;
@@ -33,22 +33,30 @@ void oneGameRound()
 	
 	uint32_t rnd32 = HardwareRng::instance().get();
 	// get time delays between 1 and 10 sec converted to ms
-	int rndTime = (int) ((rnd32 / (double) 4294967296 * 8 + 2)*1000);
+	int rndTime = (int) ((rnd32 / (double) 4294967296 * 4 + 2)*1000);
+	//printf("random: %d\n",rndTime);
 	
+	tim.start();
 	m = fourth;
 	startLedTimer(m, rndTime);
 	
-	tim.start();	
-	usleep(10000000);
-	//adc.enableWatchdogAndWait();
+
+	//usleep(10400000);
+	adc.disableWatchdog();
+	adc.enableWatchdogAndWait();
+	stopLedTimer();	
 	tim.stop();
-	playerTimes[playerNr-1] = place++;//tim.interval();
+	int scoredTime = tim.interval() - rndTime;
+	playerTimes[playerNr-1] = (scoredTime < 120) ? 9000 : scoredTime;
+	tim.clear();
 }
 
 void decideWinner()
 {
 	for(int i = 0; i < MAX_PLAYERS; ++i){
-		printf("\nScore of player %d: %d ms", i+1, playerTimes[i]);		
+		if(playerTimes[i] == 9000) printf("\nScore of player %d: CHEATER!!!", i+1);
+		
+		else printf("\nScore of player %d: %d ms", i+1, playerTimes[i]);		
 	}
 	int winner = std::min_element(playerTimes,playerTimes+MAX_PLAYERS)-&playerTimes[0];
 	
@@ -59,17 +67,28 @@ int main()
 {
 	initLedTimer();
 	configureButtonInterrupt();
-	for(playerNr = 1; playerNr <= MAX_PLAYERS; ++playerNr){
-		oneGameRound();
-	}
-	decideWinner();
+	
 	
 	for(;;)
 	{
-		/*uint16_t value = adc.convert();
-		printf("%u\r\n",value);*/
-		usleep(500000);
+		for(playerNr = 1; playerNr <= MAX_PLAYERS; ++playerNr){
+			oneGameRound();
+		}
+		decideWinner();
+		printf("\nPress button to start a new game\n");		
+		waitForButton();
+		
+
+		printf("New game starts in\n");
+		for( int i = 3; i >= 1; --i) {
+			usleep(500000);
+			printf("      %d\n",i);
+		}
+		
 	}
+	/*uint16_t value = adc.convert();
+		printf("%u\r\n",value);
+		usleep(500000);*/
 }
 		
 		

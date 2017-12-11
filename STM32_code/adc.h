@@ -9,6 +9,7 @@ public:
 	Adc();
 	uint16_t convert();
 	void enableWatchdogAndWait();
+	void disableWatchdog();
 private:
 
 };
