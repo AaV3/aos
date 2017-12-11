@@ -8,7 +8,7 @@
 using namespace miosix;
 
 
-#define MAX_PLAYERS	1
+#define MAX_PLAYERS	2
 Adc adc;
 Timer tim;
 int playerNr;
