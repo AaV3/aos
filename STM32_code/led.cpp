@@ -28,7 +28,7 @@ void initTimer() {
 	RCC->APB1ENR |= RCC_APB1ENR_TIM3EN;
 	// 2. Configure Timer prescaler to realize 100kHz counter
 	// --> 168 MHz / 100kHz = 1680
-	
+
 	// 3. Configure timer auto reload to realize an overflow each 1s
 	TIM3->ARR = 9999;
 	// 4. Configure upcounting
@@ -84,6 +84,9 @@ void toggleAllLed() {
 }
 
 void toggleOneAfterOther(){
+
+	static int count = 1;
+
 	if (ledsOn) {
 		greenLed::low();
 		blueLed::low();
@@ -91,11 +94,12 @@ void toggleOneAfterOther(){
 		orangeLed::low();
 		ledsOn = false;
 	} else {
-		static int count = 1;
+		
 		switch(count){ // no "break" here
 			case 3: greenLed::high();
 			case 2: blueLed::high();
 			case 1: redLed::high();
+
 		}
 		ledsOn = true;
 		count = (count == 3) ? count = 1 : ++count;
@@ -134,7 +138,3 @@ void TIM3_IRQHandler(){
 		else if(currentMode == fourth) toggleLast();
 	}
 }
-
-
-
-
