@@ -1,4 +1,3 @@
-//#include "registers.h"
 #include <cstdio>
 #include <algorithm>    // std::min_element
 #include <miosix.h>
@@ -67,10 +66,10 @@ int main()
 	initLedTimer();
 	configureButtonInterrupt();
   initAdc();
-	calibrateThreshold();
 
 	for(;;)
 	{
+		calibrateThreshold();
 		for(playerNr = 1; playerNr <= MAX_PLAYERS; ++playerNr){
 			oneGameRound();
 		}

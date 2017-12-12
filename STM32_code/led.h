@@ -1,23 +1,19 @@
 #ifndef LED_H
 #define LED_H
 
-#include <cstdio>
 #include <miosix.h>
 
-using namespace miosix;
+typedef miosix::Gpio<GPIOD_BASE,12> greenLed;
+typedef miosix::Gpio<GPIOD_BASE,13> orangeLed;
+typedef miosix::Gpio<GPIOD_BASE,14> redLed;
+typedef miosix::Gpio<GPIOD_BASE,15> blueLed;
 
-typedef Gpio<GPIOD_BASE,12> greenLed;
-typedef Gpio<GPIOD_BASE,13> orangeLed;
-typedef Gpio<GPIOD_BASE,14> redLed;
-typedef Gpio<GPIOD_BASE,15> blueLed;
-
-enum LedMode { allFour, firstThree, fourth };
+enum LedMode {
+	allFour, firstThree, fourth
+};
 
 void initLedTimer();
-void initLed();
-void initTimer();
-void enableTimerInterrupt();
-void startLedTimer(LedMode, uint16_t intervalInMs);
+void startLedTimer( LedMode, uint16_t intervalInMs);
 void stopLedTimer();
 
 #endif //LED_H
