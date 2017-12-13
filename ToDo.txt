@@ -1,3 +1,0 @@
-c or c++ design
-Calibrate because of different ambient conditions?
-adjust comments and add new 
