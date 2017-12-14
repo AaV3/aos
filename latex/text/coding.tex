@@ -39,12 +39,33 @@ After the push button has been pressed it is the first player's turn and all of 
 Then another player starts their turn by pressing the push button and has to interact in the same manner as the player before. This cycle is repeated until all of the players have had their turn. The reaction times are finally displayed and the player who had the lowest reaction time wins the game. A new game can be started by pressing the push button.
 
 \subsection{Peripheral drivers}
-%ADC
-%Push button
-%LED
-%Serial
-%timer
-%connections
+For simplicity a design choice for this microcontroller project was to avoid the use of threads. Every game logic procedure is executed in a sequential order and only interrupts allow to break this cycle and trigger events concurrently.\\
+\par
+In this project, interrupts are used by timers to toggle LEDs and for button detection. For the analog watchdog polling is utilized.
+This approach allows to sense if the user tries to cheat by covering the photodiode before the fourth LED start to flash. As an alternative to this it would be also possible to realize the watchdog with interrupts and toggle the LEDs with sleep delays.\\
+\par
+The Miosix operating system (\cite{Miosix}) is included in the project workspace and is mainly used for a simplified accessing of the STM32F4 peripheral addresses by calling provided register names. Also the \emph{Timer} class for measuring time and the \emph{Random Number Generator} are exploited.
+
+\subsubsection{ADC}
+The control of the analog-to-digital converter builds the core of the project. A simple photodiode is connected to the board and introduces an analog input voltage level depending on the ambient light intensity. The voltage has to be detected and read out as a digital signal in defined time intervals. Since the actual values are not important for this project, there is no data processing necessary. The values simply have to be compared to a threshold voltage and if they exceed this threshold, further action should be initiated. The analog watchdog provided by the microcontroller is used to execute this comparison.
+%TODO Arno
+%explain with the registers how the adc is actually used
+%explain calibration
+
+\subsubsection{Push button}
+%TODO Arno
+
+\subsubsection{LEDs \& Timer}
+%TODO Chris
+
+\subsubsection{Serial}
+%TODO Arno
+%black GND (not necessary?), yellow PB10, orange PB11
+%sudo screen /dev/ttyUSB0 19200
+
+\subsubsection{Connections}
+%TODO Arno
+
 \cite{RefManual}
 \begin{figure}[htbp]
   \centering
@@ -54,10 +75,9 @@ Then another player starts their turn by pressing the push button and has to int
 \end{figure}
 
 \section{Experimental evaluation}\label{Results}
+%TODO Arno
 \subsection{Experimental setup}
 \subsection{Results}
 
-
-
 \section{Conclusions}
-
+%TODO Arno

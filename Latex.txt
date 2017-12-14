@@ -36,7 +36,6 @@ https://www.latex-kurs.de/fragen/schriftgroesse.html
 \par % neuer Block
 
 \ref{fig:Bild}
-\figref
 \pageref{fig:Bild} % gibt die Seitennummer
 \cite{Buch}
 
