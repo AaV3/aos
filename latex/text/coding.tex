@@ -48,6 +48,7 @@ The Miosix operating system (\cite{Miosix}) is included in the project workspace
 
 \subsubsection{ADC}
 The control of the analog-to-digital converter builds the core of the project. A simple photodiode is connected to the board and introduces an analog input voltage level depending on the ambient light intensity. The voltage has to be detected and read out as a digital signal in defined time intervals. Since the actual values are not important for this project, there is no data processing necessary. The values simply have to be compared to a threshold voltage and if they exceed this threshold, further action should be initiated. The analog watchdog provided by the microcontroller is used to execute this comparison.
+
 %TODO Arno
 %explain with the registers how the adc is actually used
 %explain calibration
@@ -56,7 +57,9 @@ The control of the analog-to-digital converter builds the core of the project. A
 %TODO Arno
 
 \subsubsection{LEDs \& Timer}
-%TODO Chris
+Since the toggling of the LEDs is realized with interrupts, the LED management explicitely includes a hardware timer. The \emph{Led} class knows three different operating modes: At the beginning of a game round all four LEDs flash rapidly, after that the number of blinking LEDs increase from 1 to 3 and finally after a random time interval also the fourth LED becomes active. For all these three modes only one timer (TIM3) needs to be utilized because the blinking procedures happen sequentially.\\
+\par
+For every sequence the function \emph{startLedTimer()} is called with a different time interval which sets the prescaler of the timer. Also the new LED mode is passed with the function. With the given mode every time the timer generates an overflow interrupt, the corresponding IRQ handler knows in which way the LEDs should be toggled.
 
 \subsubsection{Serial}
 %TODO Arno
