@@ -1,5 +1,5 @@
 \section{Introduction}
-The goal of the project work was to implement a peripheral driver for the STM32f407 microcontroller. The implemented driver enables the use of the analog-to-digital converter (ADC). The microcontroller which contains the analog-to-digital converter is located on a development board (STM32 F4 Discovery kit) shown in figure \ref{fig:Board}. This development board contains components that can be interfaced with the microcontroller.\\
+The goal of the project work was to implement a peripheral driver for the STM32f407 microcontroller. The implemented driver enables the use of the analog-to-digital converter (ADC). The microcontroller which contains the analog-to-digital converter is located on the development board (STM32 F4 Discovery kit) shown in figure \ref{fig:Board}. This development board contains components that can be interfaced with the microcontroller.\\
 
 \begin{figure}[htbp]
   \centering
@@ -47,14 +47,27 @@ This approach allows to sense if the user tries to cheat by covering the photodi
 The Miosix operating system (\cite{Miosix}) is included in the project workspace and is mainly used for a simplified accessing of the STM32F4 peripheral addresses by calling provided register names. Also the \emph{Timer} class for measuring time and the \emph{Random Number Generator} are exploited.
 
 \subsubsection{ADC}
-The control of the analog-to-digital converter builds the core of the project. A simple photodiode is connected to the board and introduces an analog input voltage level depending on the ambient light intensity. The voltage has to be detected and read out as a digital signal in defined time intervals. Since the actual values are not important for this project, there is no data processing necessary. The values simply have to be compared to a threshold voltage and if they exceed this threshold, further action should be initiated. The analog watchdog provided by the microcontroller is used to execute this comparison.
-
-%TODO Arno
-%explain with the registers how the adc is actually used
-%explain calibration
+The control of the analog-to-digital converter builds the core of the project. A simple photodiode is connected to the board and introduces an analog input voltage level depending on the ambient light intensity. The voltage has to be detected and read out as a digital signal in defined time intervals. Since the actual values are not important for this project, there is no data processing necessary. The values simply have to be compared to a threshold voltage and if they exceed this threshold, further action should be initiated. The analog watchdog provided by the microcontroller is used to execute this comparison.\\
+\par
+To enable the the analog-to-digital converter peripheral and to connect the general purpose input/ouptut (GPIO) pin to the ADC peripheral a set of bits were needed to be set in different registers. The desired implementation was to connect the light sensor to the first GPIO of port B (PB0) and connect that GPIO to the ADC.\\
+\par
+First the GPIO port where the light sensor was connected needs to be enabled. Since the light sensor was connected to PB0 pin, the port B clock must be enabled. This is achieved by setting the GPIOBEN bit in the RCC AHB1 peripheral clock enable register. In order to connect the GPIO to the ADC it was needed to configure the GPIO port to analog mode of the four possible operation modes. This was done by writing value of 11 to number of the pin number (0) in the GPIO port mode register.\\
+\par
+The ADC peripheral is setup after connecting the GPIO port to ADC. From the user manual of the development board \cite{UsrManual} the used GPIO could be conncected to first two ADC peripherals of the three available ADC peripherals of the microcontroller and connected to the input channel 8 of the ADC. It was decided to use the ADC1 of the microcontroller thus the corresponding clock was needed to be enabled from the RCC APB2 peripheral clock enable register.\\
+\par
+The following functionality of the ADC was chosen:
+\begin{itemize}
+  \item Resolution: 12 bits
+  \item Prescaler: PCLK2/8
+  \item Sampling time of input channel (8): 84 cycles
+  \item Data alignment: right data alignment
+  \item Conversion mode: continuous conversion mode
+\end{itemize}
+All functionalities stated above could be set specifically for the ADC1 register except the prescaler value that was set in the common ADC register. Also the watchdog funcitonality of the ADC is utilized to see if the converted value is below a certain threshold that is calibrated everytime the ADC is initialized (board is powered on or reseted). The use of the watchdog functionality can be set specifically to be used in one of the three ADCs.
 
 \subsubsection{Push button}
 %TODO Arno
+
 
 \subsubsection{LEDs \& Timer}
 Since the toggling of the LEDs is realized with interrupts, the LED management explicitely includes a hardware timer. The \emph{Led} class knows three different operating modes: At the beginning of a game round all four LEDs flash rapidly, after that the number of blinking LEDs increase from 1 to 3 and finally after a random time interval also the fourth LED becomes active. For all these three modes only one timer (TIM3) needs to be utilized because the blinking procedures happen sequentially.\\
@@ -66,10 +79,11 @@ For every sequence the function \emph{startLedTimer()} is called with a differen
 %black GND (not necessary?), yellow PB10, orange PB11
 %sudo screen /dev/ttyUSB0 19200
 
-\subsubsection{Connections}
-%TODO Arno
 
-\cite{RefManual}
+
+\subsubsection{Connections}
+The connections made are shown both in table 1 and figure 4. 
+
 \begin{figure}[htbp]
   \centering
      \includegraphics[width=1\textwidth]{./figures/connections.jpg}
@@ -77,10 +91,11 @@ For every sequence the function \emph{startLedTimer()} is called with a differen
   \label{fig:connections}
 \end{figure}
 
-\section{Experimental evaluation}\label{Results}
-%TODO Arno
-\subsection{Experimental setup}
-\subsection{Results}
+\section{Results}
+The operation of the system was tested multiple times in order to test the functionality of the system and also in different locations in order to test the analog watchdog threshold set correctness. After testing the system in different lcoations the system was operating similarly everytime and thus it was concluded that the system is working correctly.
 
 \section{Conclusions}
+This project was about implementing a analog-to-digital converter driver for the STM32f407 microcontroller and utilizing it with a light sensor. Also the STM32 F4 Discovery kit development board was utilized to prdouce a user reaction time game with using the boards LEDs and pusbutton.\\
+\par
+The most emphasis of this project was on implementing the ADC driver. The most challening part of constructing the driver was interfacing the used GPIO and ADC registers.
 %TODO Arno
