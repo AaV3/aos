@@ -55,7 +55,7 @@ First the GPIO port where the light sensor was connected needs to be enabled. Si
 \par
 The ADC peripheral is setup after connecting the GPIO port to ADC. From the user manual of the development board \cite{UsrManual} the used GPIO could be conncected to first two ADC peripherals of the three available ADC peripherals of the microcontroller and connected to the input channel 8 of the ADC. It was decided to use the ADC1 of the microcontroller thus the corresponding clock was needed to be enabled from the RCC APB2 peripheral clock enable register.\\
 \par
-The following functionality of the ADC was chosen:
+After setting up the GPIO register to be used in analog mode and connecting the register to the ADC the following functionality of the ADC was chosen:
 \begin{itemize}
   \item Resolution: 12 bits
   \item Prescaler: PCLK2/8
@@ -66,6 +66,7 @@ The following functionality of the ADC was chosen:
 All functionalities stated above could be set specifically for the ADC1 register except the prescaler value that was set in the common ADC register. Also the watchdog funcitonality of the ADC is utilized to see if the converted value is below a certain threshold that is calibrated everytime the ADC is initialized (board is powered on or reseted). The use of the watchdog functionality can be set specifically to be used in one of the three ADCs.
 
 \subsubsection{Push button}
+The user configurable push button (blue push button in figure \ref{fig:Board}) is used for starting a game after board setup, switching players and starting a new game. 
 %TODO Arno
 
 
@@ -76,13 +77,14 @@ For every sequence the function \emph{startLedTimer()} is called with a differen
 
 \subsubsection{Serial}
 %TODO Arno
+The serial connection is utilized to display game instructions and the winner of the game in a terminal window of a computer. Communication with other devices is done by using the USART interface. The development board could be connected to a machine with a USB to TTL serial cable since the board itself doesn't a provide a way that the USART interface can communciate with USB. While using miosix the USART connections are predifrend. The connection is made with pins PB10 and PB11 with PB10 is used for transmitting data and PB11 is used for receiving data. Also a operating voltage and ground was provided for the TTL cable.
 %black GND (not necessary?), yellow PB10, orange PB11
 %sudo screen /dev/ttyUSB0 19200
 
 
 
 \subsubsection{Connections}
-The connections made are shown both in table 1 and figure 4. 
+The connections made are shown both in table 1 and figure 4 (CORRECT WITH REFS). 
 
 \begin{figure}[htbp]
   \centering
