@@ -6,9 +6,9 @@ Federico Terraneo.
 \newblock Website.
 \newblock https://miosix.org/index.html.
 
-\bibitem{RefManual}
+\bibitem{UsrManual}
 STMicroelectronics.
-\newblock {Reference Manual RM0090 for STM32F407}.
+\newblock {User Manual UM1472 for Discovery kit with STM32F407VG MCU}.
 \newblock 2017.
 
 \end{thebibliography}
