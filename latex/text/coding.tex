@@ -1,5 +1,5 @@
 \section{Introduction}
-The goal of the project work was to implement a peripheral driver for the STM32f407 microcontroller \cite{RefManual}. The implemented driver enables the use of the analog-to-digital converter (ADC). The microcontroller which contains the analog-to-digital converter is located on a development board (STM32 F4 Discovery kit) shown in figure \ref{fig:Board}. This development board contains components that can be interfaced with the microcontroller.\\
+The goal of this project work was to implement a peripheral driver for the STM32f407 microcontroller \cite{RefManual}. The implemented driver enables the use of the analog-to-digital converter (ADC). The microcontroller which contains the analog-to-digital converter is located on a development board (STM32 F4 Discovery kit) shown in figure \ref{fig:Board}. This development board contains components that can be interfaced with the microcontroller.\\
 
 \begin{figure}[htbp]
   \centering
@@ -34,7 +34,7 @@ The idea of the implemented game was to test the reaction time of a player. This
 
 As illustrated in figure \ref{fig:GameLogicDiagram} the game can be started after the hardware initialization has been completed. The game is started when the board's user push button has been pressed. Information about the game status and corresponding instructions are printed on a serial monitor. These instructions are shown later on in this paper in chapter \ref{Results}.\\
 \par
-After the push button has been pressed it is the first player's turn and all of the user programmable LEDs start to flash rapidly for a short duration and then the LEDs turn off. This is an indication to the player to get ready and to be prepared to cover the photodiode soon. After this the LEDs start to light up in a clockwise orientation one by one. Once the fourth LED has lighten up, the player has to cover the photodiode as quickly as possible. Player reaction time is measured from the fourth LED lighting up and to the point when the photodiode has been covered.\\ 
+After the push button has been pressed as mentioned in previous paragraph it is the first player's turn and all of the user programmable LEDs start to flash rapidly for a short duration and then the LEDs turn off. This is an indication to the player to get ready and to be prepared to cover the photodiode soon. After this the LEDs start to light up in a clockwise orientation one by one. Once the fourth LED has lighten up, the player has to cover the photodiode as quickly as possible. Player reaction time is measured from the fourth LED lighting up and to the point when the photodiode has been covered.\\ 
 \par
 Then another player starts their turn by pressing the push button and has to interact with the system in the same manner as the player before. This cycle is repeated until all of the players have had their turn. The reaction times are finally displayed and the player who has had the lowest reaction time wins the game. A new game can be started by pressing the push button.
 
@@ -51,7 +51,7 @@ The use of the analog-to-digital converter builds the core of the project. A sim
 \par
 To enable the the analog-to-digital converter peripheral and to connect the general purpose input/ouptut (GPIO) pin to the ADC peripheral a set of registers is needed to be configured. The desired implementation is to connect the light sensor to the first GPIO of port B (PB0) and connect that GPIO to the ADC.\\
 \par
-First the GPIO port where the light sensor is connected needs to be enabled. Since the light sensor is connected to PB0 pin, the port B clock must be enabled. This is achieved by setting the GPIOBEN bit in the RCC AHB1 peripheral clock enable register. In order to connect the GPIO to the ADC it is needed to configure the GPIO port to analog mode of the four possible operation modes. This was done by writing value of 11 to number of the pin number (0) in the GPIO port mode register.\\
+First the GPIO port where the light sensor is connected needs to be enabled. Since the light sensor is connected to PB0 pin, the port B clock must be enabled. This is achieved by setting the GPIOBEN bit in the RCC AHB1 peripheral clock enable register. In order to connect the GPIO to the ADC it is needed to configure the GPIO port to analog mode of the four possible operation modes. This is done by writing value of 11 to number of the pin number (0) in the GPIO port mode register.\\
 \par
 The ADC peripheral is setup after connecting the GPIO port to ADC. From the user manual of the development board \cite{UsrManual} the used GPIO could be conncected to first two ADC registers of the three available ADC registers of the microcontroller. This GPIO is connected to the input channel 8 of the ADC. It was decided to use the ADC1 of the microcontroller thus the corresponding clock was needed to be enabled from the RCC APB2 peripheral clock enable register.\\
 \par
@@ -63,10 +63,10 @@ After setting up the GPIO register to be used in analog mode and connecting the 
   \item Data alignment: right data alignment
   \item Conversion mode: continuous conversion mode
 \end{itemize}
-All functionalities stated above could be set specifically for the ADC1 register except the prescaler value that is set in the common ADC register. Also the watchdog funcitonality of the ADC is utilized to see if the converted value is below a certain threshold meaning that the photodiode has been covered. This threshold value is calibrated everytime the ADC is initialized (board is powered on or reset button has been pressed). The use of the watchdog functionality can be set specifically to be used in one of the three ADCs.
+All functionalities stated above could be set specifically for the ADC1 register except the prescaler value that is set in the common ADC register. The threshold value for the analog watchdog is calibrated everytime the ADC is initialized. The use of the watchdog functionality can be set specifically to be used in one of the three ADCs.
 
 \subsubsection{Push button}
-The user configurable push button (blue push button in figure \ref{fig:Board}) is used for starting a game after board setup, switching player turn and starting a new game after a game has finished. The push button on the development board is connected to the PA0 GPIO according to the user manual \cite{UsrManual} of the development board. The push button uses interrupts to signal the mircocontroller that it has been pressed. The setup and use of the interrupt routine was done by using functions provided by the Miosix OS.
+The user configurable push button (blue push button in figure \ref{fig:Board}) is used for starting a game after board setup, switching player turn and starting a new game after a game has finished. The push button on the development board is connected to the PA0 GPIO according to the user manual \cite{UsrManual} of the development board. The push button uses interrupts to signal the mircocontroller that it has been pressed. The setup and use of the interrupt routine was done by using functions provided by the Miosix operating system
 %TODO Arno
 
 
