@@ -1,5 +1,5 @@
 \section{Introduction}
-The goal of the project work was to implement a peripheral driver for the STM32f407 microcontroller. The implemented driver enables the use of the analog-to-digital converter (ADC). The microcontroller which contains the analog-to-digital converter is located on a development board (STM32 F4 Discovery kit) shown in figure \ref{fig:Board}. This development board contains components that can be interfaced with the microcontroller.\\
+The goal of the project work was to implement a peripheral driver for the STM32f407 microcontroller \cite{RefManual}. The implemented driver enables the use of the analog-to-digital converter (ADC). The microcontroller which contains the analog-to-digital converter is located on a development board (STM32 F4 Discovery kit) shown in figure \ref{fig:Board}. This development board contains components that can be interfaced with the microcontroller.\\
 
 \begin{figure}[htbp]
   \centering
@@ -51,7 +51,7 @@ The use of the analog-to-digital converter builds the core of the project. A sim
 \par
 To enable the the analog-to-digital converter peripheral and to connect the general purpose input/ouptut (GPIO) pin to the ADC peripheral a set of registers is needed to be configured. The desired implementation is to connect the light sensor to the first GPIO of port B (PB0) and connect that GPIO to the ADC.\\
 \par
-First the GPIO port where the light sensor was connected needs to be enabled. Since the light sensor is connected to PB0 pin, the port B clock must be enabled. This is achieved by setting the GPIOBEN bit in the RCC AHB1 peripheral clock enable register. In order to connect the GPIO to the ADC it is needed to configure the GPIO port to analog mode of the four possible operation modes. This was done by writing value of 11 to number of the pin number (0) in the GPIO port mode register.\\
+First the GPIO port where the light sensor is connected needs to be enabled. Since the light sensor is connected to PB0 pin, the port B clock must be enabled. This is achieved by setting the GPIOBEN bit in the RCC AHB1 peripheral clock enable register. In order to connect the GPIO to the ADC it is needed to configure the GPIO port to analog mode of the four possible operation modes. This was done by writing value of 11 to number of the pin number (0) in the GPIO port mode register.\\
 \par
 The ADC peripheral is setup after connecting the GPIO port to ADC. From the user manual of the development board \cite{UsrManual} the used GPIO could be conncected to first two ADC registers of the three available ADC registers of the microcontroller. This GPIO is connected to the input channel 8 of the ADC. It was decided to use the ADC1 of the microcontroller thus the corresponding clock was needed to be enabled from the RCC APB2 peripheral clock enable register.\\
 \par
@@ -66,7 +66,7 @@ After setting up the GPIO register to be used in analog mode and connecting the 
 All functionalities stated above could be set specifically for the ADC1 register except the prescaler value that is set in the common ADC register. Also the watchdog funcitonality of the ADC is utilized to see if the converted value is below a certain threshold meaning that the photodiode has been covered. This threshold value is calibrated everytime the ADC is initialized (board is powered on or reset button has been pressed). The use of the watchdog functionality can be set specifically to be used in one of the three ADCs.
 
 \subsubsection{Push button}
-The user configurable push button (blue push button in figure \ref{fig:Board}) is used for starting a game after board setup, switching player turn and starting a new game. As stated before pressing the button causes an interrupt and signal the system that the button has been pressed. 
+The user configurable push button (blue push button in figure \ref{fig:Board}) is used for starting a game after board setup, switching player turn and starting a new game after a game has finished. The push button on the development board is connected to the PA0 GPIO according to the user manual \cite{UsrManual} of the development board. The push button uses interrupts to signal the mircocontroller that it has been pressed. The setup and use of the interrupt routine was done by using functions provided by the Miosix OS.
 %TODO Arno
 
 
@@ -77,17 +77,17 @@ For every sequence the function \emph{startLedTimer()} is called with a differen
 
 \subsubsection{Serial}
 %TODO Arno
-The serial connection is utilized to display game instructions and the winner of the game in a terminal window of a machine. Communication with other devices is done by using the USART interface. The development board could be connected to a machine with a USB to TTL serial cable since the board itself doesn't a provide a way that the USART interface can communciate with USB. While using miosix the USART connections are predefined. The connection is made with pins PB10 and PB11 with PB10 being the transmitting side and PB11 being the receiving side. Also a operating voltage and ground was provided for the TTL cable. The messages sent by the microcontroller can be viewed with a terminal window application e.g. screen and using a correct baud rate (19200) indicated in the miosix source code.
+The serial connection is utilized to display game instructions and the winner of the game in a terminal window of a machine. Communication with other devices is done by using the USART interface. The development board could be connected to a machine with a USB to TTL serial cable since the board itself doesn't a provide a way that the USART interface can communciate with USB. While using miosix the USART connections are predefined. The connection is made with pins PB10 and PB11 with PB10 being the transmitting side and PB11 being the receiving side. Also a operating voltage and ground was provided for the TTL cable. The messages sent by the microcontroller can be viewed with a terminal window application e.g. screen and using a correct transmission rate (19200) indicated in the miosix source code.
 %black GND (not necessary?), yellow PB10, orange PB11
 %sudo screen /dev/ttyUSB0 19200
 
 
 
 \subsubsection{Connections}
-The connections made are described in table \ref{table:1} and also shown in figure \ref{fig:connections}. Table \ref{table:1} describes the functionality of the pin used.
+The connections made are described in table \ref{table:1} and also shown in figure \ref{fig:connections}. Table \ref{table:1} describes the functionality of the GPIO used.
 
 \begin{table}
-\caption{Connections on the development board}
+\caption{Connection table}
 \label{table:1}
 \begin{center}
 \begin{tabular}{ |c|c| } 
@@ -134,7 +134,5 @@ The operation of the system was tested multiple times and also in different loca
 
 
 \section{Conclusions}
-This project was about implementing a analog-to-digital converter driver for the STM32f407 microcontroller and utilizing it with a light sensor. Also the STM32 F4 Discovery kit development board was utilized to prdouce a user reaction time game with using the boards LEDs and user push button.\\
-\par
-The most emphasis of this project was on implementing the ADC driver. The most challening part of constructing the driver was interfacing the used GPIO and ADC registers.
+This project was about implementing a analog-to-digital converter driver for the STM32f407 microcontroller and interfacing it with a light sensor. Also the STM32 F4 Discovery kit development board was utilized to prdouce a user reaction time game with using the development boards user programmable LEDs and push button. The main emphasis of this project was to to implement the ADC driver and the game was to utilize the converted value from the ADC. The system functionality was deemed to work as planned and thus satisfying the works goals.
 %TODO Arno
