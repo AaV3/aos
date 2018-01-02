@@ -1,5 +1,10 @@
 \begin{thebibliography}{1}
 
+\bibitem{RefManual}
+STMicroelectronics.
+\newblock {Reference Manual RM0090 for STM32F407}.
+\newblock 2017.
+
 \bibitem{Miosix}
 Federico Terraneo.
 \newblock Miosix operating system.

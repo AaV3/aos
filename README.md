@@ -1,1 +1,2 @@
-#Lets start coding
+#AOS Microcontroller Project
+Light Sensor & ADC Interfacing

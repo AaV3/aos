@@ -3,37 +3,38 @@ Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
 The top-level auxiliary file: template.aux
 The style file: unsrt.bst
 Database file #1: text/project_bibliography.bib
+Warning--empty journal in RefManual
 Warning--empty journal in UsrManual
-You've used 2 entries,
+You've used 3 entries,
             1791 wiz_defined-function locations,
-            456 strings with 3726 characters,
-and the built_in function-call counts, 282 in all, are:
-= -- 22
-> -- 8
+            459 strings with 3783 characters,
+and the built_in function-call counts, 410 in all, are:
+= -- 32
+> -- 12
 < -- 0
-+ -- 4
-- -- 2
-* -- 5
-:= -- 53
-add.period$ -- 7
-call.type$ -- 2
-change.case$ -- 2
++ -- 6
+- -- 3
+* -- 8
+:= -- 76
+add.period$ -- 10
+call.type$ -- 3
+change.case$ -- 3
 chr.to.int$ -- 0
-cite$ -- 3
-duplicate$ -- 13
-empty$ -- 33
-format.name$ -- 2
-if$ -- 60
+cite$ -- 5
+duplicate$ -- 21
+empty$ -- 47
+format.name$ -- 3
+if$ -- 87
 int.to.chr$ -- 0
-int.to.str$ -- 2
-missing$ -- 1
-newline$ -- 14
-num.names$ -- 2
-pop$ -- 12
+int.to.str$ -- 3
+missing$ -- 2
+newline$ -- 19
+num.names$ -- 3
+pop$ -- 17
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 5
+skip$ -- 8
 stack$ -- 0
 substring$ -- 0
 swap$ -- 1
@@ -41,8 +42,8 @@ text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 0
-warning$ -- 1
-while$ -- 2
-width$ -- 3
-write$ -- 22
-(There was 1 warning)
+warning$ -- 2
+while$ -- 3
+width$ -- 4
+write$ -- 31
+(There were 2 warnings)

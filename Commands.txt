@@ -1,4 +1,4 @@
-miosix is in /home/chris/AOS
+miosix is in ~/AOS
 compile and flash it with the help of makefile modification:
 make program
 
